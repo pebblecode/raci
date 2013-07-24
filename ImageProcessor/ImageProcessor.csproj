@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="IBlock.cs" />
     <Compile Include="IBlockFinder.cs" />
+    <Compile Include="IBlockStitcher.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

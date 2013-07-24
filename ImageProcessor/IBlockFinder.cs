@@ -18,7 +18,7 @@ namespace ImageProcessor
         {
             var libary = blockLibrary.ToArray();
 
-            if (libary.Any())
+            if (!libary.Any())
                 throw new ArgumentException("Library contains no blocks!");
 
             IBlock matchingBlock = libary.First();
