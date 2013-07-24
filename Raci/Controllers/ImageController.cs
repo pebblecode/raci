@@ -1,5 +1,6 @@
 ﻿namespace Raci.Controllers
 {
+    using System;
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
@@ -13,19 +14,26 @@
 
     public class ImageController : ApiController
     {
-        public HttpResponseMessage Get(string tags)
+        public object Get(string tags)
         {
-            var flickrService = new FlickrImageService();
-            var image = flickrService.GetImages(tags).First();
-            HttpResponseMessage result;
-            using (var ms = new MemoryStream())
+            try
             {
-                var bitmap = new Bitmap(image);
-                bitmap.Save(ms, ImageFormat.Jpeg);
-                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(ms.ToArray()) };
+                var flickrService = new FlickrImageService();
+                var image = flickrService.GetImages(tags).First();
+                HttpResponseMessage result;
+                using (var ms = new MemoryStream())
+                {
+                    var bitmap = new Bitmap(image);
+                    bitmap.Save(ms, ImageFormat.Jpeg);
+                    result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(ms.ToArray()) };
+                }
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                return result;
             }
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            return result;
+            catch (Exception e)
+            {
+                return e;
+            }
         }
     }
 }
