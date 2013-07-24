@@ -24,16 +24,20 @@ namespace ImageProcessor
         public IEnumerable<IBlock> GenerateBlocks(Bitmap image)
         {
             var size = new Size(_size.Width, _size.Height);
+            var cropArea = new Rectangle {Size = size};
             var blockList = new List<IBlock>();
-            for (int x = 0; x < image.Width; x += _size.Width)
+
+
+            for (int x = 0; x <= image.Width - _size.Width; x += (_size.Width))
             {
-                for (int y = 0; y < image.Height; y += _size.Width)
+                for (int y = 0; y <= image.Height - _size.Height; y += (_size.Height))
                 {
-                    var cropArea = new Rectangle(new Point(x, y), size);
-                    Bitmap blockImg = image.Clone(cropArea, image.PixelFormat);
-                    blockList.Add(new Block(blockImg, new Position(x, y)));
+
+                    cropArea.Location = new Point(x, y);
+                    blockList.Add(new Block(image.Clone(cropArea, image.PixelFormat), new Position(x, y)));
                 }
             }
+
             return blockList;
         }
     }

@@ -21,8 +21,12 @@ namespace ImageProcessor
             var exampleBlock = blocksCollection.First().Source;
             var blockWidth = exampleBlock.Width;
             var blockHeight = exampleBlock.Height;
-            var image = new Bitmap(CalculateImageWidth(blocksCollection), CalculateImageHeight(blocksCollection));
+            var baseImageForSettings = blocksCollection.First().Source;
+            var image = new Bitmap(CalculateImageWidth(blocksCollection), CalculateImageHeight(blocksCollection), baseImageForSettings.PixelFormat);
+            image.SetResolution(baseImageForSettings.HorizontalResolution, baseImageForSettings.VerticalResolution);
             var graphics = Graphics.FromImage(image);
+            
+            
             foreach (var block in blocksCollection)
             {
                 graphics.DrawImage(block.Source, block.Position.X, block.Position.Y);
