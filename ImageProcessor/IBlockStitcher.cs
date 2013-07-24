@@ -16,11 +16,37 @@ namespace ImageProcessor
     {
         public Bitmap Stitch(IEnumerable<IBlock> blocks)
         {
-            //var image = new Bitmap();
-            //Graphics graphics = Graphics.FromImage(image);
-            //graphics.DrawImage();
-            //return image;
-            return null;
+            var blocksCollection = blocks.ToList();
+            CheckStitchingParameters(blocksCollection);
+            var exampleBlock = blocksCollection.First().Source;
+            var blockWidth = exampleBlock.Width;
+            var blockHeight = exampleBlock.Height;
+            var image = new Bitmap(CalculateImageWidth(blocksCollection), CalculateImageHeight(blocksCollection));
+            var graphics = Graphics.FromImage(image);
+            foreach (var block in blocksCollection)
+            {
+                graphics.DrawImage(block.Source, block.Position.X, block.Position.Y);
+            }
+            return image;
+        }
+
+        private int CalculateImageWidth(IEnumerable<IBlock> blocksCollection)
+        {
+            return blocksCollection.Max(block => block.Position.X + block.Source.Width);
+        }
+
+        private int CalculateImageHeight(IEnumerable<IBlock> blocksCollection)
+        {
+            return blocksCollection.Max(block => block.Position.Y + block.Source.Height);
+        }
+
+        private static void CheckStitchingParameters(List<IBlock> blocksCollection)
+        {
+            if (!blocksCollection.Any())
+            {
+                throw new ArgumentException("No blocks were provided to build an image with");
+            }
+            // Also check all blocks have the same width
         }
     }
 }
