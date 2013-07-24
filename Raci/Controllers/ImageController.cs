@@ -14,26 +14,19 @@
 
     public class ImageController : ApiController
     {
-        public object Get(string tags)
+        public HttpResponseMessage Get(string tags)
         {
-            try
+            var flickrService = new FlickrImageService();
+            var image = flickrService.GetImages(tags).First();
+            HttpResponseMessage result;
+            using (var ms = new MemoryStream())
             {
-                var flickrService = new FlickrImageService();
-                var image = flickrService.GetImages(tags).First();
-                HttpResponseMessage result;
-                using (var ms = new MemoryStream())
-                {
-                    var bitmap = new Bitmap(image);
-                    bitmap.Save(ms, ImageFormat.Jpeg);
-                    result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(ms.ToArray()) };
-                }
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-                return result;
+                var bitmap = new Bitmap(image);
+                bitmap.Save(ms, ImageFormat.Jpeg);
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(ms.ToArray()) };
             }
-            catch (Exception e)
-            {
-                return e;
-            }
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            return result;
         }
     }
 }
