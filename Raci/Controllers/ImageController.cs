@@ -10,6 +10,8 @@
     using System.Net.Http.Headers;
     using System.Web.Http;
 
+    using FlickrNet;
+
     using ImageSource;
 
     public class ImageController : ApiController
