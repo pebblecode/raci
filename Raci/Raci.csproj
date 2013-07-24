@@ -200,7 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImageSource\FlickrImage.csproj">
-      <Project>{CB16F68A-3084-49C4-9378-CC7126F76DB7}</Project>
+      <Project>{cb16f68a-3084-49c4-9378-cc7126f76db7}</Project>
       <Name>FlickrImage</Name>
     </ProjectReference>
   </ItemGroup>
