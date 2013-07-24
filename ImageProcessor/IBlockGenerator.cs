@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,8 @@ namespace ImageProcessor
                 {
 
                     cropArea.Location = new Point(x, y);
-                    blockList.Add(new Block(image.Clone(cropArea, image.PixelFormat), new Position(x, y)));
+                    Bitmap source = image.Clone(cropArea, image.PixelFormat);
+                    blockList.Add(new Block(source, new Position(x, y)));
                 }
             }
 
