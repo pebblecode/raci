@@ -35,6 +35,7 @@ namespace ImageProcessor
                     blockList.Add(new Block(blockImg, new Position(x, y)));
                 }
             }
+            return blockList;
         }
     }
 
