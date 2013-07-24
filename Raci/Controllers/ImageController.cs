@@ -20,7 +20,7 @@
             var flickrService = new FlickrImageService();
             var images = flickrService.GetImages(tags).Take(2).ToArray();
             var processor = new Processor();
-            var resultImage = processor.ProcessImage(images.First(), images.Skip(1), 10, 10);
+            var resultImage = processor.ProcessImage(images.First().Image, images.Skip(1).Select(i=>i.Image), 20, 20);
             HttpResponseMessage result;
             using (var ms = new MemoryStream())
             {
@@ -32,10 +32,10 @@
             return result;
         }
 
-        public object Put(string tags)
+        public object Post(string tags)
         {
             var flickrService = new FlickrImageService();
-            var images = flickrService.GetImages(tags).Take(2).ToArray();
+            var images = flickrService.GetImages(tags).Take(2).Select(i=>i.Url).ToArray();
 
             return new
                        {

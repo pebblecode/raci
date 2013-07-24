@@ -1,11 +1,16 @@
-﻿<div id="body">
+﻿@model Raci.Controllers.FlickModel
+
+<div id="body">
     <section class="featured">
         
     </section>
     <section class="content-wrapper main-content clear-fix">
-        <img class="image" src="/api/image?tags=sea,cheese" alt="weeeeee"/>
-        <img class="image2" alt="weeeeee"/>
-        <img class="image3" alt="weeeeee"/>
+@*        <img class="image" src="@Model.BaseUrl" alt="weeeeee"/>
+        <img class="image2" src="@Model.BlockUrl" alt="weeeeee"/>
+        <img class="image3" src="@Model.FinishedUrl" alt="weeeeee"/>*@
+        <img src="data:image/png;base64,@Model.BaseEncoded" />
+        <img src="data:image/png;base64,@Model.BlockEncoded" />
+        <img src="data:image/png;base64,@Model.FinishedEncoded" />
     </section>
 </div>
 
@@ -16,16 +21,16 @@
 
 @section scripts
 {
-    <script type="text/javascript">
+@*    <script type="text/javascript">
         $(function () {
             var refresh = function(value) {
                 $.ajax({
-                    type: "PUT",
+                    type: "POST",
                     contentType: "application/json",
                     url: "/api/image?tags=" + value,
-                    data: { name: 'norm' },
                     dataType: "application/json",
-                    success: function(data) {
+                    success: function (data) {
+                        console.log(data);
                         var json = $.parseJSON(data);
                         $(".image2").attr("src", json.base);
                         $(".image3").attr("src", json.block);
@@ -39,5 +44,5 @@
             });
         });
 
-    </script>
+    </script>*@
 }

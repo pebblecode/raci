@@ -26,8 +26,7 @@ namespace ImageProcessor
             var size = new Size(_size.Width, _size.Height);
             var cropArea = new Rectangle {Size = size};
             var blockList = new List<IBlock>();
-
-
+            
             for (int x = 0; x <= image.Width - _size.Width; x += (_size.Width))
             {
                 for (int y = 0; y <= image.Height - _size.Height; y += (_size.Height))

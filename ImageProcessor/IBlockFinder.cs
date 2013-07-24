@@ -64,7 +64,7 @@ namespace ImageProcessor
             int b = 0;
             int total = 0;
 
-            for (int i = 0; i < img.Width && i < img.Height; i++)
+            for (int i = 0; i < img.Width && i < img.Height; i+=5)
             {
                 Color pixelColor = img.GetPixel(i, i);
                 r += pixelColor.R;
@@ -73,7 +73,7 @@ namespace ImageProcessor
                 total++;
             }
 
-            for (int i = 0; i < img.Width && i < img.Height; i++)
+            for (int i = 0; i < img.Width && i < img.Height; i+=5)
             {
                 Color pixelColor = img.GetPixel(i, img.Height - i - 1);
                 r += pixelColor.R;
