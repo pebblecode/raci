@@ -4,6 +4,8 @@
     </section>
     <section class="content-wrapper main-content clear-fix">
         <img class="image" src="/api/image?tags=sea,cheese" alt="weeeeee"/>
+        <img class="image2" alt="weeeeee"/>
+        <img class="image3" alt="weeeeee"/>
     </section>
 </div>
 
@@ -16,9 +18,26 @@
 {
     <script type="text/javascript">
         $(function () {
-            $(".submit-button").click(function(event) {
+            var refresh = function(value) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: "/api/image?tags=" + value,
+                    data: { name: 'norm' },
+                    dataType: "application/json",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        $(".image2").attr("src", json.base);
+                        $(".image3").attr("src", json.block);
+                    }
+                });
+            };
+            refresh("sea,cheese");
+            $(".submit-button").click(function () {
+                refresh($(".tags").val());
                 $(".image").attr("src", "/api/image?tags=" + $(".tags").val());
             });
         });
+
     </script>
 }
