@@ -33,6 +33,10 @@ namespace ImageProcessor
                     currentMinDistanceToTarget = distanceToTargetColour;
                 }
             }
+
+            matchingBlock.Position.X = source.Position.X;
+            matchingBlock.Position.Y = source.Position.Y;
+
             return matchingBlock;
         }
 
@@ -53,6 +57,7 @@ namespace ImageProcessor
         private Color GetAverageHexValue(Bitmap img)
         {
             // TODO: Refactor using LINQ
+            // TODO: Might need to refactor to only check a sample of pixels
 
             int r = 0;
             int g = 0;
