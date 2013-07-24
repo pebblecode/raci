@@ -16,11 +16,11 @@
     public class ImageController : ApiController
     {
         public HttpResponseMessage Get(string tags)
-        {
+        {      
             var flickrService = new FlickrImageService();
-            var images = flickrService.GetImages(tags).Take(1).ToArray();
+            var images = flickrService.GetImages(tags).Take(2).ToArray();
             var processor = new Processor();
-            var resultImage = processor.ProcessImage(images.First(), images, 20, 20);
+            var resultImage = processor.ProcessImage(images.First(), images.Skip(1), 20, 20);
             HttpResponseMessage result;
             using (var ms = new MemoryStream())
             {
