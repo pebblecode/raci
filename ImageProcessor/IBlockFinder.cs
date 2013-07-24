@@ -7,29 +7,33 @@ namespace ImageProcessor
 {
     interface IBlockFinder
     {
-        IBlock Find(IBlock source, IEnumerable<IBlock> blockLibrary);
+        IBlock Find(IBlock source);
     }
 
     internal class HexColourBlockFinder : IBlockFinder
     {
-
-        public IBlock Find(IBlock source, IEnumerable<IBlock> blockLibrary)
+        private IDictionary<Color, IBlock> libraryColorCache = new Dictionary<Color, IBlock>();
+ 
+        public HexColourBlockFinder(IEnumerable<IBlock> blockLibrary)
         {
-            var libary = blockLibrary.ToArray();
-
-            if (!libary.Any())
-                throw new ArgumentException("Library contains no blocks!");
-
-            IBlock matchingBlock = libary.First();
-
-            double currentMinDistanceToTarget = DistanceToTargetColour(source, matchingBlock);
-
-            foreach (var blockToTest in libary)
+            foreach (var block in blockLibrary)
             {
-                double distanceToTargetColour = DistanceToTargetColour(source, blockToTest);
+                libraryColorCache[GetAverageHexValue(block.Source)] = block;
+            }
+        }
+
+        public IBlock Find(IBlock source)
+        {
+            IBlock matchingBlock = libraryColorCache.First().Value;
+
+            double currentMinDistanceToTarget = DistanceToTargetColour(source, libraryColorCache.First().Key);
+
+            foreach (var colour in libraryColorCache.Keys)
+            {
+                double distanceToTargetColour = DistanceToTargetColour(source, colour);
                 if (currentMinDistanceToTarget > distanceToTargetColour)
                 {
-                    matchingBlock = blockToTest;
+                    matchingBlock = libraryColorCache[colour];
                     currentMinDistanceToTarget = distanceToTargetColour;
                 }
             }
@@ -40,19 +44,18 @@ namespace ImageProcessor
         /**
          * Returns the pythagorean distance between the average rgb colours of the blocks
          */
-
-        private double DistanceToTargetColour(IBlock block1, IBlock block2)
+        private double DistanceToTargetColour(IBlock block1, Color colour)
         {
             var averageColour1 = GetAverageHexValue(block1.Source);
-            var averageColour2 = GetAverageHexValue(block2.Source);
             return Math.Sqrt(
-                Math.Pow(averageColour1.R - averageColour2.R, 2)
-                + Math.Pow(averageColour1.G - averageColour2.G, 2)
-                + Math.Pow(averageColour1.B - averageColour2.B, 2));
+                Math.Pow(averageColour1.R - colour.R, 2)
+                + Math.Pow(averageColour1.G - colour.G, 2)
+                + Math.Pow(averageColour1.B - colour.B, 2));
         }
 
         private Color GetAverageHexValue(Bitmap img)
         {
+
             // TODO: Refactor using LINQ
             // TODO: Might need to refactor to only check a sample of pixels
 
@@ -61,19 +64,37 @@ namespace ImageProcessor
             int b = 0;
             int total = 0;
 
-            for (int x = 0; x < img.Width; x++)
+            for (int i = 0; i < img.Width && i < img.Height; i++)
             {
-                for (int y = 0; y < img.Height; y++)
-                {
-                    Color pixelColor = img.GetPixel(x, y);
-                    r += pixelColor.R;
-                    g += pixelColor.G;
-                    b += pixelColor.B;
-                    total++;
-                }
+                Color pixelColor = img.GetPixel(i, i);
+                r += pixelColor.R;
+                g += pixelColor.G;
+                b += pixelColor.B;
+                total++;
             }
 
-            r /= total;
+            for (int i = 0; i < img.Width && i < img.Height; i++)
+            {
+                Color pixelColor = img.GetPixel(i, img.Height - i - 1);
+                r += pixelColor.R;
+                g += pixelColor.G;
+                b += pixelColor.B;
+                total++;
+            }
+
+                //for (int x = 0; x < img.Width; x++)
+                //{
+                //    for (int y = 0; y < img.Height; y++)
+                //    {
+                //        Color pixelColor = img.GetPixel(x, y);
+                //        r += pixelColor.R;
+                //        g += pixelColor.G;
+                //        b += pixelColor.B;
+                //        total++;
+                //    }
+                //}
+
+                r /= total;
             g /= total;
             b /= total;
 

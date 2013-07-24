@@ -14,8 +14,8 @@ namespace ImageProcessor
             IBlockGenerator generator = new BasicBlockGenerator(new BlockSize(blockWidth, blockHeight));
             var library = LoadLibrary(libraryBase, generator).ToList();
             var decomposedOriginal = generator.GenerateBlocks(original);
-            IBlockFinder finder = new HexColourBlockFinder();
-            var newBlocks = decomposedOriginal.Select(originalBlock => finder.Find(originalBlock, library));
+            IBlockFinder finder = new HexColourBlockFinder(library);
+            var newBlocks = decomposedOriginal.Select(originalBlock => finder.Find(originalBlock));
             IBlockStitcher stitcher = new BlockStitcher();
             return stitcher.Stitch(newBlocks);
         }
