@@ -14,6 +14,7 @@
         {
             Flickr.CacheDisabled = true;
             var flickr = new Flickr("340b341adedd9b2613d5c447c4541e0f");
+            flickr.InstanceCacheDisabled = true;
             var options = new PhotoSearchOptions { Tags = tags, PerPage = 1  };
             var photos = flickr.PhotosSearch(options);
             return photos.AsParallel().Select(i =>
