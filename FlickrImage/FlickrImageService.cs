@@ -1,6 +1,5 @@
 ﻿namespace ImageSource
 {
-    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
@@ -13,6 +12,7 @@
     {
         public IEnumerable<Bitmap> GetImages(string tags)
         {
+            Flickr.CacheDisabled = true;
             var flickr = new Flickr("340b341adedd9b2613d5c447c4541e0f");
             var options = new PhotoSearchOptions { Tags = tags, PerPage = 1  };
             var photos = flickr.PhotosSearch(options);

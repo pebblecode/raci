@@ -1,6 +1,5 @@
 ﻿namespace Raci.Controllers
 {
-    using System;
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
@@ -9,8 +8,6 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Web.Http;
-
-    using FlickrNet;
 
     using ImageSource;
 
