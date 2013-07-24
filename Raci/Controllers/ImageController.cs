@@ -9,6 +9,8 @@
     using System.Net.Http.Headers;
     using System.Web.Http;
 
+    using ImageProcessor;
+
     using ImageSource;
 
     public class ImageController : ApiController
@@ -16,11 +18,13 @@
         public HttpResponseMessage Get(string tags)
         {
             var flickrService = new FlickrImageService();
-            var image = flickrService.GetImages(tags).First();
+            var images = flickrService.GetImages(tags).Take(1).ToArray();
+            var processor = new Processor();
+            var resultImage = processor.ProcessImage(images.First(), images, 20, 20);
             HttpResponseMessage result;
             using (var ms = new MemoryStream())
             {
-                var bitmap = new Bitmap(image);
+                var bitmap = new Bitmap(resultImage);
                 bitmap.Save(ms, ImageFormat.Jpeg);
                 result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(ms.ToArray()) };
             }

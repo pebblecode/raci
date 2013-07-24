@@ -207,6 +207,10 @@
       <Project>{CB16F68A-3084-49C4-9378-CC7126F76DB7}</Project>
       <Name>FlickrImage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageProcessor\ImageProcessor.csproj">
+      <Project>{E46E9156-69D2-4A85-A72B-297663ECB864}</Project>
+      <Name>ImageProcessor</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
