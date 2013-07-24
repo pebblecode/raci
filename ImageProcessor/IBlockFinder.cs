@@ -64,19 +64,37 @@ namespace ImageProcessor
             int b = 0;
             int total = 0;
 
-            for (int x = 0; x < img.Width; x++)
+            for (int i = 0; i < img.Width && i < img.Height; i++)
             {
-                for (int y = 0; y < img.Height; y++)
-                {
-                    Color pixelColor = img.GetPixel(x, y);
-                    r += pixelColor.R;
-                    g += pixelColor.G;
-                    b += pixelColor.B;
-                    total++;
-                }
+                Color pixelColor = img.GetPixel(i, i);
+                r += pixelColor.R;
+                g += pixelColor.G;
+                b += pixelColor.B;
+                total++;
             }
 
-            r /= total;
+            for (int i = 0; i < img.Width && i < img.Height; i++)
+            {
+                Color pixelColor = img.GetPixel(i, img.Height - i - 1);
+                r += pixelColor.R;
+                g += pixelColor.G;
+                b += pixelColor.B;
+                total++;
+            }
+
+                //for (int x = 0; x < img.Width; x++)
+                //{
+                //    for (int y = 0; y < img.Height; y++)
+                //    {
+                //        Color pixelColor = img.GetPixel(x, y);
+                //        r += pixelColor.R;
+                //        g += pixelColor.G;
+                //        b += pixelColor.B;
+                //        total++;
+                //    }
+                //}
+
+                r /= total;
             g /= total;
             b /= total;
 
