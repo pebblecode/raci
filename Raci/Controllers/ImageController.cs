@@ -20,7 +20,7 @@
             var flickrService = new FlickrImageService();
             var images = flickrService.GetImages(tags).Take(2).ToArray();
             var processor = new Processor();
-            var resultImage = processor.ProcessImage(images.First(), images.Skip(1), 20, 20);
+            var resultImage = processor.ProcessImage(images.First(), images.Skip(1), 10, 10);
             HttpResponseMessage result;
             using (var ms = new MemoryStream())
             {
@@ -30,6 +30,18 @@
             }
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
             return result;
+        }
+
+        public object Put(string tags)
+        {
+            var flickrService = new FlickrImageService();
+            var images = flickrService.GetImages(tags).Take(2).ToArray();
+
+            return new
+                       {
+                           @base = images.First(),
+                           @block = images.Skip(1).First(),
+                       };
         }
     }
 }
