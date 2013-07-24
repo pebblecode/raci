@@ -18,21 +18,26 @@
 {
     <script type="text/javascript">
         $(function () {
-            $(".submit-button").click(function (event) {
+            var refresh = function(value) {
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     contentType: "application/json",
-                    url: "/api/image?tags=" + $(".tags").val(),
+                    url: "/api/image?tags=" + value,
                     data: { name: 'norm' },
-                    dataType: "json",
-                    success: function (data) {
+                    dataType: "application/json",
+                    success: function(data) {
                         var json = $.parseJSON(data);
                         $(".image2").attr("src", json.base);
                         $(".image3").attr("src", json.block);
                     }
                 });
+            };
+            refresh("sea,cheese");
+            $(".submit-button").click(function () {
+                refresh($(".tags").val());
                 $(".image").attr("src", "/api/image?tags=" + $(".tags").val());
             });
         });
+
     </script>
 }
