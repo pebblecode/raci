@@ -1,6 +1,6 @@
 ﻿namespace ImageProcessor
 {
-    internal interface IPosition 
+    public interface IPosition 
     {
         int X { get; }
         int Y { get; }

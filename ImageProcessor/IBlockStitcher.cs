@@ -12,7 +12,7 @@ namespace ImageProcessor
         Bitmap Stitch(IEnumerable<IBlock> blocks);
     }
 
-    class BlockStitcher : IBlockStitcher
+    public class BlockStitcher : IBlockStitcher
     {
         public Bitmap Stitch(IEnumerable<IBlock> blocks)
         {

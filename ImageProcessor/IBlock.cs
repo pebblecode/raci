@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ImageProcessor
 {
-    interface IBlock
+    public interface IBlock
     {
         Bitmap Source { get; }
         IPosition Position { get; }
     }
 
-    class Block: IBlock
+    public class Block: IBlock
     {
         public Bitmap Source { get; private set; }
         public IPosition Position { get; private set; }

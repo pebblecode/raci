@@ -12,7 +12,7 @@ namespace ImageProcessor
         IEnumerable<IBlock> GenerateBlocks(Bitmap image);
     }
 
-    class BasicBlockGenerator : IBlockGenerator
+    public class BasicBlockGenerator : IBlockGenerator
     {
         private readonly BlockSize _size;
 
@@ -38,7 +38,7 @@ namespace ImageProcessor
         }
     }
 
-    class BlockSize
+    public class BlockSize
     {
         public int Height { get; private set; }
         public int Width { get; private set; }
