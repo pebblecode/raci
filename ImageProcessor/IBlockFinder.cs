@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Media.Imaging;
 
 namespace ImageProcessor
 {
@@ -11,7 +10,7 @@ namespace ImageProcessor
         IBlock Find(IBlock source, IEnumerable<IBlock> blockLibrary);
     }
 
-    class HexColourBlockFinder : IBlockFinder
+    internal class HexColourBlockFinder : IBlockFinder
     {
 
         public IBlock Find(IBlock source, IEnumerable<IBlock> blockLibrary)
@@ -40,6 +39,7 @@ namespace ImageProcessor
         /**
          * Returns the pythagorean distance between the average rgb colours of the blocks
          */
+
         private double DistanceToTargetColour(IBlock block1, IBlock block2)
         {
             var averageColour1 = GetAverageHexValue(block1.Source);
@@ -50,7 +50,7 @@ namespace ImageProcessor
                 + Math.Pow(averageColour1.B - averageColour2.B, 2));
         }
 
-        private Color GetAverageHexValue(BitmapImage img)
+        private Color GetAverageHexValue(Bitmap img)
         {
             // TODO: Refactor using LINQ
 
@@ -59,13 +59,16 @@ namespace ImageProcessor
             int b = 0;
             int total = 0;
 
-            foreach (var i in GetPixelData(img))
+            for (int x = 0; x < img.Width; x++)
             {
-                Color pixelColor = Color.FromArgb(i);
-                r += pixelColor.R;
-                g += pixelColor.G;
-                b += pixelColor.B;
-                total++;
+                for (int y = 0; y < img.Height; y++)
+                {
+                    Color pixelColor = img.GetPixel(x, y);
+                    r += pixelColor.R;
+                    g += pixelColor.G;
+                    b += pixelColor.B;
+                    total++;
+                }
             }
 
             r /= total;
@@ -73,16 +76,6 @@ namespace ImageProcessor
             b /= total;
 
             return Color.FromArgb(r, g, b);
-        }
-
-        private static int[] GetPixelData(BitmapImage img)
-        {
-            int h = img.PixelHeight;
-            int w = img.PixelWidth;
-            int[] pixelData = new int[w*h];
-            int widthInByte = 4*w;
-            img.CopyPixels(pixelData, widthInByte, 0);
-            return pixelData;
         }
     }
 }

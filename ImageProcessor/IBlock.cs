@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
 namespace ImageProcessor
 {
     interface IBlock
     {
-        BitmapImage Source { get; }
+        Bitmap Source { get; }
         IPosition Position { get; }
     }
 
     class Block: IBlock
     {
-        public BitmapImage Source { get; private set; }
+        public Bitmap Source { get; private set; }
         public IPosition Position { get; private set; }
 
-        public Block(BitmapImage source, IPosition position)
+        public Block(Bitmap source, IPosition position)
         {
             Source = source;
             Position = position;

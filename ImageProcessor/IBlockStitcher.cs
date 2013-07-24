@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
 namespace ImageProcessor
 {
     interface IBlockStitcher
     {
-        BitmapImage Stitch(IEnumerable<IBlock> blocks);
+        Bitmap Stitch(IEnumerable<IBlock> blocks);
     }
 
     class BlockStitcher : IBlockStitcher
     {
-        public BitmapImage Stitch(IEnumerable<IBlock> blocks)
+        public Bitmap Stitch(IEnumerable<IBlock> blocks)
         {
-            throw new NotImplementedException();
+            //var image = new Bitmap();
+            //Graphics graphics = Graphics.FromImage(image);
+            //graphics.DrawImage();
+            //return image;
+            return null;
         }
     }
 }
