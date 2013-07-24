@@ -34,10 +34,7 @@ namespace ImageProcessor
                 }
             }
 
-            matchingBlock.Position.X = source.Position.X;
-            matchingBlock.Position.Y = source.Position.Y;
-
-            return matchingBlock;
+            return new Block(matchingBlock.Source, source.Position);
         }
 
         /**
