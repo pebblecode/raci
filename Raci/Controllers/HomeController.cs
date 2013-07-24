@@ -15,20 +15,59 @@
 
     public class HomeController : Controller
     {
-        public ActionResult Index(string tags)
+        public ActionResult Index(string tags, string original, string block, int blockSize = 20)
         {
-            tags = tags ?? "cheese,stuff";
-            var flickrService = new FlickrImageService();
-            var images = flickrService.GetImages(tags).Take(2).ToArray();
-
             var processor = new Processor();
-            var resultImage = processor.ProcessImage(images.First().Image, images.Skip(1).Select(i => i.Image), 20, 20);
-            HttpResponseMessage result;
+            Bitmap resultImage;
+
+            if (string.IsNullOrWhiteSpace(original) || string.IsNullOrWhiteSpace(block))
+            {
+                tags = tags ?? "cheese,stuff";
+                var flickrService = new FlickrImageService();
+                var images = flickrService.GetImages(tags).Take(2).ToArray();
+
+                resultImage = processor.ProcessImage(
+                    images.First().Image, images.Skip(1).Select(i => i.Image), blockSize, blockSize);
+                HttpResponseMessage result;
+                using (var ms = new MemoryStream())
+                {
+                    var bitmap = new Bitmap(resultImage);
+                    bitmap.Save(ms, ImageFormat.Jpeg);
+                    return
+                        View(
+                            new FlickModel(
+                                images.First().Encoded,
+                                images.Skip(1).First().Encoded,
+                                Convert.ToBase64String(ms.ToArray())));
+                }
+            }
+            var originalImage = this.Load(original);
+            var blockImage = this.Load(block);
+            resultImage = processor.ProcessImage(originalImage.Image, new[] { blockImage.Image, }, blockSize, blockSize);
+
             using (var ms = new MemoryStream())
             {
                 var bitmap = new Bitmap(resultImage);
                 bitmap.Save(ms, ImageFormat.Jpeg);
-                return View(new FlickModel(images.First().Encoded, images.Skip(1).First().Encoded, Convert.ToBase64String(ms.ToArray())));
+                return View(new FlickModel(originalImage.Encoded, blockImage.Encoded, Convert.ToBase64String(ms.ToArray())));
+            }
+        }
+
+        public FlickrImage Load(string url)
+        {
+            using (var client = new WebClient())
+            {
+                var data = client.DownloadData(url);
+                using (var memoryStream = new MemoryStream(data))
+                {
+                    var bitmap = new Bitmap(memoryStream);
+                    return new FlickrImage
+                    {
+                        Url = url,
+                        Image = new Bitmap(bitmap),
+                        Encoded = Convert.ToBase64String(memoryStream.ToArray())
+                    };
+                }
             }
         }
     }
