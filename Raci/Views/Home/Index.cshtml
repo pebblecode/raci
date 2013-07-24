@@ -15,34 +15,19 @@
 </div>
 
 <div id="entry" style="float: right">
-    <input class="tags" type="text"/>
+    <input class="original" type="text"/>
+    <input class="blocks" type="text"/>
     <a class="submit-button">Sumbit</a>
 </div>
 
 @section scripts
 {
-@*    <script type="text/javascript">
+    <script type="text/javascript">
         $(function () {
-            var refresh = function(value) {
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/api/image?tags=" + value,
-                    dataType: "application/json",
-                    success: function (data) {
-                        console.log(data);
-                        var json = $.parseJSON(data);
-                        $(".image2").attr("src", json.base);
-                        $(".image3").attr("src", json.block);
-                    }
-                });
-            };
-            refresh("sea,cheese");
             $(".submit-button").click(function () {
-                refresh($(".tags").val());
-                $(".image").attr("src", "/api/image?tags=" + $(".tags").val());
+                window.location.href = "http://raci.azurewebsites.net/?original=" + $(".original").val() + "&blocks=" + $(".blocks").val();
             });
         });
 
-    </script>*@
+    </script>
 }
